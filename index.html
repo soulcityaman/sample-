@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aman Rangani — JECRC University</title>
+<style>
+  :root{
+    --bg: #0a100d;
+    --panel: #0e1713;
+    --panel-2: #101c16;
+    --line: rgba(255,255,255,0.07);
+    --ink: #eef4f0;
+    --ink-dim: #9fb0a8;
+    --mint: #7fe0ab;
+    --mint-dim: rgba(127,224,171,0.14);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  @font-face{
+    font-family:'Display';
+    src: local('Georgia');
+  }
+  .wrap{max-width:1040px;margin:0 auto;padding:28px 20px 80px;}
+
+  /* ambient cursor glow */
+  #glow{
+    position:fixed; inset:0; pointer-events:none; z-index:0;
+    background: radial-gradient(600px circle at var(--x,50%) var(--y,20%), rgba(127,224,171,0.06), transparent 40%);
+    transition: background 0.1s ease;
+  }
+
+  .card{
+    position:relative;
+    background: linear-gradient(180deg, var(--panel-2), var(--panel));
+    border:1px solid var(--line);
+    border-radius:22px;
+    z-index:1;
+  }
+
+  /* HERO */
+  .hero{
+    display:grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap:0;
+    padding:44px;
+    overflow:hidden;
+    opacity:0;
+    transform:translateY(14px);
+    animation: rise .7s ease forwards;
+  }
+  @keyframes rise{to{opacity:1;transform:none;}}
+
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:6px;
+    font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--ink-dim);
+    border:1px solid var(--line); padding:6px 12px; border-radius:100px;
+    background:rgba(255,255,255,0.02);
+  }
+  h1.name{
+    font-family: 'Snell Roundhand','Segoe Script','Brush Script MT', cursive;
+    font-weight:400;
+    font-size:64px;
+    margin:18px 0 14px;
+    color:var(--ink);
+    letter-spacing:0.5px;
+  }
+  .tagline{
+    max-width:420px; color:var(--ink-dim); line-height:1.55; font-size:16px; margin:0 0 26px;
+  }
+  .btns{display:flex; gap:12px; flex-wrap:wrap;}
+  .btn{
+    border:none; cursor:pointer; font-size:14px; padding:11px 20px; border-radius:100px;
+    transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+    font-family:inherit;
+  }
+  .btn-primary{background:var(--mint); color:#06170f; font-weight:600;}
+  .btn-primary:hover{transform:translateY(-2px); box-shadow:0 8px 24px rgba(127,224,171,0.28);}
+  .btn-ghost{background:rgba(255,255,255,0.03); color:var(--ink); border:1px solid var(--line);}
+  .btn-ghost:hover{background:rgba(255,255,255,0.08); transform:translateY(-2px);}
+
+  .hero-visual{
+    position:relative;
+    background: radial-gradient(circle at 70% 20%, rgba(127,224,171,0.20), transparent 55%), var(--panel);
+    border-radius:18px; border:1px solid var(--line);
+    padding:24px; display:flex; flex-direction:column; justify-content:flex-end; min-height:280px;
+    margin-left:24px;
+    overflow:hidden;
+  }
+  .glow-orb{
+    position:absolute; top:-40px; right:-30px; width:220px; height:220px; border-radius:50%;
+    background: radial-gradient(circle, rgba(127,224,171,0.55), transparent 70%);
+    filter: blur(6px);
+    animation: float 6s ease-in-out infinite;
+  }
+  @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(14px);}}
+  .avatar{
+    width:74px; height:74px; border-radius:50%;
+    background: rgba(255,255,255,0.06);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Snell Roundhand','Segoe Script',cursive; font-size:26px; color:var(--ink);
+    border:1px solid var(--line);
+    cursor:pointer;
+    transition: transform .25s ease, background .25s ease;
+    z-index:1;
+  }
+  .avatar:hover{transform:scale(1.08) rotate(-4deg); background:var(--mint-dim);}
+  .visual-caption{color:var(--ink-dim); font-size:13px; margin-top:14px; z-index:1;}
+
+  /* SECTION HEADER */
+  .section-head{padding:56px 4px 22px;}
+  .section-eyebrow{
+    color:var(--mint); font-size:11px; letter-spacing:.16em; text-transform:uppercase; font-weight:600;
+  }
+  h2.section-title{
+    font-family:'Snell Roundhand','Segoe Script',cursive; font-weight:400;
+    font-size:38px; margin:10px 0 0; display:flex; align-items:baseline; gap:14px; flex-wrap:wrap;
+  }
+  .meta{font-size:12px; color:var(--ink-dim); font-family:'Segoe UI',sans-serif;}
+
+  /* FILTER TABS (tweak: interactivity) */
+  .filters{display:flex; gap:8px; margin:18px 0 0; flex-wrap:wrap;}
+  .filter{
+    background:transparent; border:1px solid var(--line); color:var(--ink-dim);
+    padding:7px 14px; border-radius:100px; font-size:12px; cursor:pointer;
+    transition:all .15s ease; font-family:inherit;
+  }
+  .filter:hover{color:var(--ink); border-color:rgba(255,255,255,0.2);}
+  .filter.active{background:var(--mint); color:#06170f; border-color:var(--mint); font-weight:600;}
+
+  /* WORK GRID */
+  .grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:20px;}
+  .work-card{
+    padding:22px; cursor:pointer; transition: transform .25s ease, border-color .25s ease, background .25s ease;
+  }
+  .work-card:hover{transform:translateY(-6px); border-color:rgba(127,224,171,0.35);}
+  .work-top{display:flex; justify-content:space-between; align-items:center; margin-bottom:22px;}
+  .tag{font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--mint);}
+  .expand{color:var(--ink-dim); font-size:16px; transition:transform .2s ease;}
+  .work-card:hover .expand{transform:rotate(90deg); color:var(--mint);}
+  .work-card h3{margin:0 0 8px; font-size:19px; font-weight:600;}
+  .work-card p{margin:0; color:var(--ink-dim); font-size:13.5px; line-height:1.55;}
+  .work-detail{
+    max-height:0; overflow:hidden; transition:max-height .35s ease, margin-top .35s ease;
+    font-size:12.5px; color:var(--ink-dim); border-top:1px solid transparent;
+  }
+  .work-card.open .work-detail{max-height:140px; margin-top:14px; border-top:1px solid var(--line); padding-top:12px;}
+
+  /* TWO COL INFO */
+  .info-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:16px;}
+  .info-card{padding:26px;}
+  .info-eyebrow{font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--mint); margin-bottom:10px;}
+  .info-card h3{margin:0 0 10px; font-size:22px; font-family:'Snell Roundhand','Segoe Script',cursive; font-weight:400;}
+  .info-card p{margin:0; color:var(--ink-dim); font-size:14px; line-height:1.6;}
+  .pill{
+    display:inline-flex; align-items:center; gap:6px; margin-top:14px;
+    background:var(--mint-dim); color:var(--mint); font-size:12px; font-weight:600;
+    padding:6px 12px; border-radius:100px;
+  }
+
+  /* CONTACT */
+  .contact{
+    margin-top:16px; padding:40px; display:flex; justify-content:space-between; align-items:center; gap:24px; flex-wrap:wrap;
+    background: linear-gradient(135deg, rgba(127,224,171,0.08), var(--panel));
+  }
+  .contact h2{font-family:'Snell Roundhand','Segoe Script',cursive; font-weight:400; font-size:30px; margin:0 0 10px;}
+  .contact p{color:var(--ink-dim); margin:0; max-width:420px; font-size:14px; line-height:1.6;}
+  .say-hello{white-space:nowrap;}
+
+  /* modal */
+  .modal-backdrop{
+    position:fixed; inset:0; background:rgba(0,0,0,0.6); display:none; align-items:center; justify-content:center;
+    z-index:10; padding:20px;
+  }
+  .modal-backdrop.show{display:flex;}
+  .modal{
+    background:var(--panel-2); border:1px solid var(--line); border-radius:18px; padding:28px; width:100%; max-width:400px;
+  }
+  .modal h3{margin:0 0 6px; font-size:20px;}
+  .modal p{color:var(--ink-dim); font-size:13px; margin:0 0 18px;}
+  .modal input, .modal textarea{
+    width:100%; background:rgba(255,255,255,0.03); border:1px solid var(--line); border-radius:10px;
+    padding:10px 12px; color:var(--ink); font-family:inherit; font-size:13px; margin-bottom:10px; resize:vertical;
+  }
+  .modal input:focus, .modal textarea:focus{outline:2px solid var(--mint); outline-offset:1px;}
+  .modal-actions{display:flex; justify-content:flex-end; gap:8px; margin-top:6px;}
+  .modal-close{background:transparent; border:none; color:var(--ink-dim); font-size:13px; cursor:pointer;}
+
+  footer{text-align:center; color:var(--ink-dim); font-size:12px; margin-top:36px;}
+
+  @media (max-width:760px){
+    .hero{grid-template-columns:1fr; gap:26px;}
+    .hero-visual{margin-left:0;}
+    .grid, .info-grid{grid-template-columns:1fr;}
+    h1.name{font-size:46px;}
+  }
+</style>
+</head>
+<body>
+<div id="glow"></div>
+<div class="wrap">
+
+  <!-- HERO -->
+  <section class="card hero">
+    <div>
+      <span class="eyebrow">✦ JECRC University · Jaipur</span>
+      <h1 class="name">Aman Rangani</h1>
+      <p class="tagline">Student designer &amp; developer crafting thoughtful digital experiences with clarity, curiosity, and care.</p>
+      <div class="btns">
+        <button class="btn btn-primary" onclick="document.getElementById('work').scrollIntoView()">View selected work</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('contact').scrollIntoView()">Open to learn</button>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="glow-orb"></div>
+      <div class="avatar" title="Hi 👋">AR</div>
+      <div class="visual-caption">BCA student · Design systems · Front-end craft</div>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <div class="section-head" id="work">
+    <div class="section-eyebrow">Selected work</div>
+    <h2 class="section-title">Small experiments, carefully considered. <span class="meta">03 / 2026</span></h2>
+    <div class="filters" id="filters">
+      <button class="filter active" data-f="all">All</button>
+      <button class="filter" data-f="UX Concept">UX Concept</button>
+      <button class="filter" data-f="Editorial Web">Editorial Web</button>
+      <button class="filter" data-f="Front-end">Front-end</button>
+    </div>
+  </div>
+
+  <div class="grid" id="grid">
+    <div class="card work-card" data-cat="UX Concept">
+      <div class="work-top"><span class="tag">UX Concept</span><span class="expand">›</span></div>
+      <h3>Campus Compass</h3>
+      <p>A calmer wayfinding companion for new students navigating campus life.</p>
+      <div class="work-detail">Maps building layouts, class schedules, and quiet study spots into one gentle onboarding flow — designed to reduce first-week overwhelm.</div>
+    </div>
+    <div class="card work-card" data-cat="Editorial Web">
+      <div class="work-top"><span class="tag">Editorial Web</span><span class="expand">›</span></div>
+      <h3>Sattva Journal</h3>
+      <p>A digital reading space shaped around pace, focus, and gentle rituals.</p>
+      <div class="work-detail">A distraction-free reading layout with adjustable pacing, soft typographic rhythm, and a reading-streak ritual instead of a follower count.</div>
+    </div>
+    <div class="card work-card" data-cat="Front-end">
+      <div class="work-top"><span class="tag">Front-end</span><span class="expand">›</span></div>
+      <h3>GreenRoom</h3>
+      <p>A polished interface for tracking sustainable everyday choices.</p>
+      <div class="work-detail">Built with vanilla JS and CSS variables — logs small habits (transit, reuse, energy) and turns them into a weekly impact snapshot.</div>
+    </div>
+  </div>
+
+  <div class="info-grid">
+    <div class="card info-card">
+      <div class="info-eyebrow">Academic profile</div>
+      <h3>JECRC University</h3>
+      <p>Building a foundation across technology, visual systems, and collaborative problem-solving in Jaipur.</p>
+    </div>
+    <div class="card info-card">
+      <div class="info-eyebrow">Working with</div>
+      <h3 style="font-family:inherit; font-size:15px; font-weight:600; color:var(--ink-dim);">Interface design · HTML/CSS · JavaScript · Research · Visual storytelling</h3>
+      <div class="pill">✕D Creative tooling</div>
+    </div>
+  </div>
+
+  <!-- CONTACT -->
+  <div class="card contact" id="contact">
+    <div>
+      <h2>Let's make something considered.</h2>
+      <p>Available for collaborations, student opportunities, and meaningful digital experiments.</p>
+    </div>
+    <button class="btn btn-primary say-hello" onclick="openModal()">Say hello ✉</button>
+  </div>
+
+  <footer>Portfolio recreation for Aman Rangani · original design inspiration via Framer</footer>
+</div>
+
+<!-- MODAL -->
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal">
+    <h3>Say hello</h3>
+    <p>Drop a note — Aman replies within a few days.</p>
+    <form id="helloForm">
+      <input type="text" placeholder="Your name" required>
+      <input type="email" placeholder="Your email" required>
+      <textarea rows="3" placeholder="What are you working on?" required></textarea>
+      <div class="modal-actions">
+        <button type="button" class="modal-close" onclick="closeModal()">Cancel</button>
+        <button type="submit" class="btn btn-primary">Send</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  // ambient cursor glow
+  document.addEventListener('mousemove', e=>{
+    document.getElementById('glow').style.setProperty('--x', e.clientX+'px');
+    document.getElementById('glow').style.setProperty('--y', e.clientY+'px');
+  });
+
+  // filters
+  const filters = document.querySelectorAll('.filter');
+  const cards = document.querySelectorAll('.work-card');
+  filters.forEach(f=>{
+    f.addEventListener('click', ()=>{
+      filters.forEach(x=>x.classList.remove('active'));
+      f.classList.add('active');
+      const val = f.dataset.f;
+      cards.forEach(c=>{
+        c.style.display = (val==='all' || c.dataset.cat===val) ? '' : 'none';
+      });
+    });
+  });
+
+  // expand work cards
+  cards.forEach(c=>{
+    c.addEventListener('click', ()=> c.classList.toggle('open'));
+  });
+
+  // modal
+  function openModal(){ document.getElementById('modalBackdrop').classList.add('show'); }
+  function closeModal(){ document.getElementById('modalBackdrop').classList.remove('show'); }
+  document.getElementById('modalBackdrop').addEventListener('click', e=>{
+    if(e.target.id==='modalBackdrop') closeModal();
+  });
+  document.getElementById('helloForm').addEventListener('submit', e=>{
+    e.preventDefault();
+    const modal = document.querySelector('.modal');
+    modal.innerHTML = '<h3>Message sent ✓</h3><p>Thanks for reaching out — Aman will get back to you soon.</p><div class="modal-actions"><button class="btn btn-primary" onclick="closeModal()">Close</button></div>';
+  });
+</script>
+</body>
+</html>
